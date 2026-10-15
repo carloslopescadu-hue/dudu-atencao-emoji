@@ -131,6 +131,11 @@ export class AttentionEngine {
   }
 
   private read(now: number): FrameSignals | null {
+    // Só em desenvolvimento: permite gravar demonstrações com sinais simulados.
+    if (import.meta.env.DEV) {
+      const demo = (window as { __focusmojiSignals?: () => FrameSignals }).__focusmojiSignals
+      if (demo) return demo()
+    }
     const v = this.video
     if (v.readyState < 2 || v.videoWidth === 0) return null
     if (v.currentTime === this.lastVideoTime) return null

@@ -125,11 +125,16 @@ function Timeline({ values, label }: { values: number[]; label: string }) {
           <stop offset="1" stopColor="#E9D8A0" stopOpacity="0" />
         </linearGradient>
       </defs>
-      {ticks.map((m) => (
-        <text key={m} x={(m * 60 * W) / (n - 1)} y={H + 24} textAnchor="middle" className="timeline-tick">
-          {m} min
-        </text>
-      ))}
+      {ticks.map((m) => {
+        const tx = Math.min((m * 60 * W) / (n - 1), W)
+        // Os rótulos das pontas alinham para dentro, para não serem cortados.
+        const anchor = tx <= 0 ? 'start' : tx >= W - 20 ? 'end' : 'middle'
+        return (
+          <text key={m} x={tx} y={H + 24} textAnchor={anchor} className="timeline-tick">
+            {m} min
+          </text>
+        )
+      })}
     </svg>
   )
 }
